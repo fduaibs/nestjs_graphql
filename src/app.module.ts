@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { HelloModule } from './features/hello/hello.module';
+import { PokemonsModule } from './features/pokemons/pokemons.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HelloModule } from './features/hello/hello.module';
       synchronize: false,
     }),
     HelloModule,
+    PokemonsModule,
   ],
   controllers: [],
   providers: [],

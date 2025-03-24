@@ -1,3 +1,17 @@
 type Query {
-  pokemons: String!
+  findManyPokemon: [Pokemon!]!
+}
+
+type Pokemon {
+  id: ID!
+  name: String!
+  type: String!
+  created_at: String!
+  updated_at: String!
+}
+
+type Mutation {
+  createOnePokemon(name: String!, type: String!): Pokemon!
+  updateOnePokemon(id: ID!, name: String, type: String): Pokemon!
+  deleteOnePokemon(id: ID!): Boolean!
 }
