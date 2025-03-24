@@ -1,10 +1,10 @@
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { HelloModule } from './modules/hello/hello.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
+import { HelloModule } from './features/hello/hello.module';
 
 @Module({
   imports: [
@@ -17,7 +17,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         path: join(process.cwd(), 'src/graphql.ts'),
       },
     }),
-    HelloModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './database/database_orm.sqlite',
@@ -25,6 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       migrations: ['../typeorm/migrations/*.ts'],
     }),
+    HelloModule,
   ],
   controllers: [],
   providers: [],

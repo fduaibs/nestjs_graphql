@@ -1,4 +1,3 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -9,7 +8,7 @@
 /* eslint-disable */
 
 export abstract class IQuery {
-    abstract hello(): string | Promise<string>;
+  abstract hello(): string | Promise<string>;
 }
 
 type Nullable<T> = T | null;
