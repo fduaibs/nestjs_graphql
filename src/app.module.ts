@@ -19,8 +19,8 @@ import { HelloModule } from './features/hello/hello.module';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: './common/database/database_orm.sqlite',
-      migrations: ['./common/typeorm/migrations/*.ts'],
+      database: './src/common/database/database_orm.sqlite',
+      migrations: [__dirname + '/common/typeorm/migrations/*.ts'],
       autoLoadEntities: true,
       synchronize: false,
     }),

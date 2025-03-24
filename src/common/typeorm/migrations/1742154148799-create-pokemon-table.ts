@@ -8,7 +8,7 @@ export class CreatePokemonsTable1742154148799 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'INTEGER',
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'increment',
@@ -23,13 +23,14 @@ export class CreatePokemonsTable1742154148799 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
-            default: 'now()',
+            type: 'TEXT',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
-            default: 'now()',
+            type: 'TEXT',
+            default: 'CURRENT_TIMESTAMP',
+            onUpdate: 'CURRENT_TIMESTAMP',
           },
         ],
       }),
