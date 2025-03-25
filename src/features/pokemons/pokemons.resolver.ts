@@ -14,8 +14,10 @@ export class PokemonsResolver {
     @Args('limit', { type: () => Int, nullable: true, defaultValue: 10 }) limit: number = 10,
     @Args('sortField', { type: () => String, nullable: true, defaultValue: 'id' }) sortField: string = 'id',
     @Args('sortOrder', { type: () => SortOrderEnum, nullable: true, defaultValue: SortOrderEnum.ASC }) sortOrder: SortOrderEnum = SortOrderEnum.ASC,
+    @Args('name', { type: () => String, nullable: true }) name?: string,
+    @Args('type', { type: () => String, nullable: true }) type?: string,
   ): Promise<FindManyPokemonResponseDto> {
-    return this.pokemonsService.findManyPokemon(page, limit, sortField, sortOrder);
+    return this.pokemonsService.findManyPokemon(page, limit, sortField, sortOrder, name, type);
   }
 
   @Mutation(() => Pokemon)

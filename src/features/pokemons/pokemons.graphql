@@ -19,7 +19,7 @@ type PaginatedPokemonResponse {
 }
 
 type Query {
-  findManyPokemon(page: Int, limit: Int, sortField: String, sortOrder: SortOrder): PaginatedPokemonResponse!
+  findManyPokemon(page: Int, limit: Int, sortField: String, sortOrder: SortOrder, name: String, type: String): PaginatedPokemonResponse!
 }
 
 type Mutation {
