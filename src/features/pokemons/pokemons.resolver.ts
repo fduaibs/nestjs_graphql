@@ -1,5 +1,6 @@
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { FindManyPokemonResponseDto } from './dtos/find-many-pokemon.dto';
+import { SortOrderEnum } from './enums/sort-order.enum';
 import { Pokemon } from './pokemon.entity';
 import { PokemonsService } from './pokemons.service';
 
@@ -11,8 +12,10 @@ export class PokemonsResolver {
   findManyPokemon(
     @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page: number = 1,
     @Args('limit', { type: () => Int, nullable: true, defaultValue: 10 }) limit: number = 10,
+    @Args('sortField', { type: () => String, nullable: true, defaultValue: 'id' }) sortField: string = 'id',
+    @Args('sortOrder', { type: () => SortOrderEnum, nullable: true, defaultValue: SortOrderEnum.ASC }) sortOrder: SortOrderEnum = SortOrderEnum.ASC,
   ): Promise<FindManyPokemonResponseDto> {
-    return this.pokemonsService.findManyPokemon(page, limit);
+    return this.pokemonsService.findManyPokemon(page, limit, sortField, sortOrder);
   }
 
   @Mutation(() => Pokemon)

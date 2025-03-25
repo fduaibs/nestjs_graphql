@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FindManyPokemonResponseDto } from './dtos/find-many-pokemon.dto';
+import { SortOrderEnum } from './enums/sort-order.enum';
 import { Pokemon } from './pokemon.entity';
 
 @Injectable()
@@ -31,12 +32,13 @@ export class PokemonsService {
     return deletedData.affected === 1;
   }
 
-  async findManyPokemon(page: number, limit: number): Promise<FindManyPokemonResponseDto> {
+  async findManyPokemon(page: number, limit: number, sortField: string, sortOrder: SortOrderEnum): Promise<FindManyPokemonResponseDto> {
     const skip = (page - 1) * limit;
 
     const [pokemonsFound, totalCount] = await this.pokemonsRepository.findAndCount({
       skip,
       take: limit,
+      order: { [sortField]: sortOrder },
     });
 
     const totalPages = Math.ceil(totalCount / limit);

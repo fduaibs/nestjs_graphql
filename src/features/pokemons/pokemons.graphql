@@ -1,5 +1,6 @@
-type Query {
-  findManyPokemon(page: Int, limit: Int): PaginatedPokemonResponse!
+enum SortOrder {
+  ASC
+  DESC
 }
 
 type Pokemon {
@@ -10,15 +11,19 @@ type Pokemon {
   updated_at: String!
 }
 
-type Mutation {
-  createOnePokemon(name: String!, type: String!): Pokemon!
-  updateOnePokemon(id: ID!, name: String, type: String): Pokemon!
-  deleteOnePokemon(id: ID!): Boolean!
-}
-
 type PaginatedPokemonResponse {
   totalCount: Int!
   totalPages: Int!
   currentPage: Int!
   pokemons: [Pokemon!]!
+}
+
+type Query {
+  findManyPokemon(page: Int, limit: Int, sortField: String, sortOrder: SortOrder): PaginatedPokemonResponse!
+}
+
+type Mutation {
+  createOnePokemon(name: String!, type: String!): Pokemon!
+  updateOnePokemon(id: ID!, name: String, type: String): Pokemon!
+  deleteOnePokemon(id: ID!): Boolean!
 }
