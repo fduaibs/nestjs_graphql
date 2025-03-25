@@ -1,9 +1,12 @@
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { GraphqlThrottlerGuard } from './common/guards/graphql-throttler.guard';
 import { HelloModule } from './features/hello/hello.module';
 import { PokemonsModule } from './features/pokemons/pokemons.module';
 
@@ -11,6 +14,7 @@ import { PokemonsModule } from './features/pokemons/pokemons.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      context: ({ req, res }) => ({ req, res }),
       typePaths: ['./**/*.graphql'],
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -25,10 +29,23 @@ import { PokemonsModule } from './features/pokemons/pokemons.module';
       autoLoadEntities: true,
       synchronize: false,
     }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 1000,
+          limit: 2,
+        },
+      ],
+    }),
     HelloModule,
     PokemonsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: GraphqlThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
