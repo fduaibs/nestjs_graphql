@@ -11,7 +11,7 @@ export class Pokemon {
   @Column()
   type: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'text', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @UpdateDateColumn({ type: 'text', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
