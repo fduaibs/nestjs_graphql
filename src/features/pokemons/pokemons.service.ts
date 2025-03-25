@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FindManyPokemonResponseDto } from './dtos/find-many-pokemon.dto';
 import { Pokemon } from './pokemon.entity';
 
 @Injectable()
@@ -30,9 +31,16 @@ export class PokemonsService {
     return deletedData.affected === 1;
   }
 
-  async findManyPokemon(): Promise<Pokemon[]> {
-    const pokemonsFound = await this.pokemonsRepository.find();
+  async findManyPokemon(page: number, limit: number): Promise<FindManyPokemonResponseDto> {
+    const skip = (page - 1) * limit;
 
-    return pokemonsFound;
+    const [pokemonsFound, totalCount] = await this.pokemonsRepository.findAndCount({
+      skip,
+      take: limit,
+    });
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return { totalCount, totalPages: totalPages, currentPage: page, pokemons: pokemonsFound };
   }
 }

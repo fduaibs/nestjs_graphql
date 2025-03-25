@@ -1,4 +1,5 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { FindManyPokemonResponseDto } from './dtos/find-many-pokemon.dto';
 import { Pokemon } from './pokemon.entity';
 import { PokemonsService } from './pokemons.service';
 
@@ -6,9 +7,12 @@ import { PokemonsService } from './pokemons.service';
 export class PokemonsResolver {
   constructor(private readonly pokemonsService: PokemonsService) {}
 
-  @Query(() => [Pokemon])
-  findManyPokemon() {
-    return this.pokemonsService.findManyPokemon();
+  @Query(() => FindManyPokemonResponseDto)
+  findManyPokemon(
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page: number = 1,
+    @Args('limit', { type: () => Int, nullable: true, defaultValue: 10 }) limit: number = 10,
+  ): Promise<FindManyPokemonResponseDto> {
+    return this.pokemonsService.findManyPokemon(page, limit);
   }
 
   @Mutation(() => Pokemon)

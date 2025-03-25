@@ -1,5 +1,5 @@
 type Query {
-  findManyPokemon: [Pokemon!]!
+  findManyPokemon(page: Int, limit: Int): PaginatedPokemonResponse!
 }
 
 type Pokemon {
@@ -14,4 +14,11 @@ type Mutation {
   createOnePokemon(name: String!, type: String!): Pokemon!
   updateOnePokemon(id: ID!, name: String, type: String): Pokemon!
   deleteOnePokemon(id: ID!): Boolean!
+}
+
+type PaginatedPokemonResponse {
+  totalCount: Int!
+  totalPages: Int!
+  currentPage: Int!
+  pokemons: [Pokemon!]!
 }
