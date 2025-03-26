@@ -26,4 +26,5 @@ type Mutation {
   createOnePokemon(name: String!, type: String!): Pokemon!
   updateOnePokemon(id: ID!, name: String, type: String): Pokemon!
   deleteOnePokemon(id: ID!): Boolean!
+  importPokemonById(id: ID!): Pokemon!
 }

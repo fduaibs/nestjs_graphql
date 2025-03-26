@@ -38,4 +38,9 @@ export class PokemonsResolver {
   async deleteOnePokemon(@Args({ name: 'id', type: () => ID }) id: number) {
     return this.pokemonsService.deleteOnePokemon(id);
   }
+
+  @Mutation(() => Pokemon)
+  async importPokemonById(@Args({ name: 'id', type: () => ID }) id: number) {
+    return this.pokemonsService.importPokemonById(id);
+  }
 }
