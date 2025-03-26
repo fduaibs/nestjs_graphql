@@ -17,10 +17,10 @@ export class PokemonsResolver {
   }
 
   @Query(() => FindManyPokemonResponseDto)
-  findManyPokemon(@Args('findManyPokemonInputDto') findManyPokemonInputDto: FindManyPokemonInputDto): Promise<FindManyPokemonResponseDto> {
+  async findManyPokemon(@Args('findManyPokemonInputDto') findManyPokemonInputDto: FindManyPokemonInputDto): Promise<FindManyPokemonResponseDto> {
     const { page, limit, sortField, sortOrder, name, type } = findManyPokemonInputDto;
 
-    return this.pokemonsService.findManyPokemon(page, limit, sortField, sortOrder, name, type);
+    return await this.pokemonsService.findManyPokemon(page, limit, sortField, sortOrder, name, type);
   }
 
   @Mutation(() => Pokemon)
