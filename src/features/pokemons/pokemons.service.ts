@@ -61,7 +61,7 @@ export class PokemonsService {
     return { totalCount, totalPages: totalPages, currentPage: page, pokemons: pokemonsFound };
   }
 
-  async importPokemonById(id: number) {
+  async importPokemonById(id: number): Promise<Pokemon> {
     const fetchedPokemon = await this.pokeapiService.getPokemonById(id);
 
     const name = fetchedPokemon.name;
