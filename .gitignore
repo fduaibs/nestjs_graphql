@@ -16,3 +16,5 @@ graphql.ts
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# ENV CONFIGS
+.env
