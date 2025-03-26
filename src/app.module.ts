@@ -1,3 +1,5 @@
+import responseCachePlugin from '@apollo/server-plugin-response-cache';
+import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
@@ -14,15 +16,27 @@ import { PokemonsModule } from './features/pokemons/pokemons.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      context: ({ req, res }) => ({ req, res }),
-      typePaths: ['./**/*.graphql'],
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
-      },
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        driver: ApolloDriver,
+        context: ({ req, res }) => ({ req, res }),
+        typePaths: ['./**/*.graphql'],
+        playground: false,
+        plugins: [
+          ApolloServerPluginLandingPageLocalDefault(),
+          ApolloServerPluginCacheControl({
+            defaultMaxAge: configService.get('APOLLO_CACHE_DEFAULT_MAX_AGE'),
+            calculateHttpHeaders: configService.get('APOLLO_CACHE_CALCULATE_HTTP_HEADERS'),
+          }),
+          responseCachePlugin(),
+        ],
+        definitions: {
+          path: join(process.cwd(), 'src/graphql.ts'),
+        },
+      }),
+      inject: [ConfigService],
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
@@ -34,10 +48,10 @@ import { PokemonsModule } from './features/pokemons/pokemons.module';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => [
+      useFactory: (configService: ConfigService) => [
         {
-          ttl: config.get('THROTTLE_TTL'),
-          limit: config.get('THROTTLE_LIMIT'),
+          ttl: configService.get('THROTTLE_TTL'),
+          limit: configService.get('THROTTLE_LIMIT'),
         },
       ],
     }),
